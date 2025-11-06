@@ -1,0 +1,15 @@
+<button><a href="/edit/TestPage">Create Test Page</a></button>
+
+{{if len .Items }}
+<ul>
+    {{range .Items}}
+    <li style="width: 100%">
+        <div >
+            <a href="/view/{{.}}">{{.}}</a>
+        </div>
+    </li>
+    {{end}}
+</ul>
+{{else}}
+<p>Pages does not exist!</p>
+{{end}}

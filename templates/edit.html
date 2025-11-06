@@ -1,0 +1,12 @@
+<form style="max-width: 100%" action="/save/{{.Title}}" method="POST">
+    <div style="max-width: 100%">
+        Title
+        <input style="margin-bottom: 15px; width: 100%" type="text" value="{{.Title}}" name="title">
+    </div>
+
+    <div style="max-width: 100%">
+        Body
+        <textarea style="max-width: 100%" name="body" rows="20" cols="80">{{printf "%s" .Body}}</textarea>
+    </div>
+    <div><input type="submit" value="Сохранить"></div>
+</form>

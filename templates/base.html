@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{.Title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 2rem;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+        button {
+            cursor: pointer;
+            margin-bottom: 15px;
+            background-color: white;
+            font-size: 15px;
+        }
+        a {
+            background-color: transparent;
+            text-decoration: none;
+            color: black;
+        }
+        ul {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        li {
+            padding: 6px;
+            border: dotted 2px white;
+        }
+        .main {
+            max-width: 50vh;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+
+            border: solid 2px white;
+            min-height: 500px;
+            min-width: 300px;
+            padding: 15px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button>
+            <a href="/">Home</a>
+        </button>
+    </header>
+    <div class="main">
+        <h1>
+            {{.Title}}
+        </h1>
+        {{.Content}}
+    </div>
+</body>
+</html>
