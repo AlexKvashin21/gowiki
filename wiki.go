@@ -12,17 +12,17 @@ import (
 	"strings"
 )
 
-type PageData struct {
+type pageData struct {
 	Title   string
 	Content interface{}
 }
 
-type PageModel struct {
+type pageModel struct {
 	Title string
 	Body  []byte
 }
 
-type IndexData struct {
+type indexData struct {
 	Items []string
 }
 
@@ -42,9 +42,9 @@ func indexHandler(w http.ResponseWriter, r *http.Request, param string) {
 		files[i] = strings.TrimSuffix(strings.TrimPrefix(file, os.Getenv("STORAGE_PATH")+"/"), ".txt")
 	}
 
-	data := PageData{
+	data := pageData{
 		Title: "All Pages",
-		Content: &IndexData{
+		Content: &indexData{
 			files,
 		},
 	}
@@ -59,7 +59,7 @@ func viewHandler(w http.ResponseWriter, r *http.Request, param string) {
 		return
 	}
 
-	data := PageData{
+	data := pageData{
 		Title:   "View " + param,
 		Content: p,
 	}
@@ -70,7 +70,7 @@ func viewHandler(w http.ResponseWriter, r *http.Request, param string) {
 func saveHandler(w http.ResponseWriter, r *http.Request, param string) {
 	body := r.FormValue("body")
 	title := r.FormValue("title")
-	p := &PageModel{Title: title, Body: []byte(body)}
+	p := &pageModel{Title: title, Body: []byte(body)}
 
 	err := p.save()
 	if err != nil {
@@ -100,10 +100,10 @@ func deleteHandler(w http.ResponseWriter, r *http.Request, param string) {
 func editHandler(w http.ResponseWriter, r *http.Request, param string) {
 	p, err := loadPage(param)
 	if err != nil {
-		p = &PageModel{Title: param}
+		p = &pageModel{Title: param}
 	}
 
-	data := PageData{
+	data := pageData{
 		Title:   "Edit " + param,
 		Content: p,
 	}
@@ -123,7 +123,7 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 	}
 }
 
-func renderTemplate(w http.ResponseWriter, pageData PageData, tmpl string) {
+func renderTemplate(w http.ResponseWriter, pageData pageData, tmpl string) {
 	baseTmpl := templates.Lookup("base.html")
 	contentTmpl := templates.Lookup(tmpl + ".html")
 
@@ -154,7 +154,7 @@ func renderTemplate(w http.ResponseWriter, pageData PageData, tmpl string) {
 	}
 }
 
-func (p *PageModel) save() error {
+func (p *pageModel) save() error {
 	filename := os.Getenv("STORAGE_PATH") + "/" + p.Title + ".txt"
 
 	if _, err := os.Stat(os.Getenv("STORAGE_PATH")); os.IsNotExist(err) {
@@ -167,7 +167,7 @@ func (p *PageModel) save() error {
 	return os.WriteFile(filename, p.Body, 0600)
 }
 
-func (p *PageModel) delete() error {
+func (p *pageModel) delete() error {
 	filename := os.Getenv("STORAGE_PATH") + "/" + p.Title + ".txt"
 
 	if _, err := os.Stat(os.Getenv("STORAGE_PATH")); os.IsNotExist(err) {
@@ -180,7 +180,7 @@ func (p *PageModel) delete() error {
 	return os.Remove(filename)
 }
 
-func loadPage(param string) (*PageModel, error) {
+func loadPage(param string) (*pageModel, error) {
 	fn := os.Getenv("STORAGE_PATH") + "/" + param + ".txt"
 
 	body, err := os.ReadFile(fn)
@@ -188,7 +188,7 @@ func loadPage(param string) (*PageModel, error) {
 		return nil, err
 	}
 
-	return &PageModel{Title: param, Body: body}, nil
+	return &pageModel{Title: param, Body: body}, nil
 }
 
 func setupEnv() {
